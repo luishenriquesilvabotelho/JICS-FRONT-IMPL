@@ -26,25 +26,26 @@ const UpdateScore: React.FC<UpdateScoreProps> = ({ match, onUpdate }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-
+  
     if (!token) {
       console.error('No token found');
       return;
-  }
-
+    }
+  
     try {
-      
-      await api.post(`/teams/matches/${match._id}/score`, { scoreA, scoreB }, {
+      await api.put(`/teams/matches/${match._id}/score`, { scoreA, scoreB }, {
         headers: {
-            Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
-    });
+      });
       setMessage('Score updated successfully!');
       onUpdate();
     } catch (error: any) {
       setMessage(error.response?.data.message || 'Error updating score');
     }
   };
+  
+  
 
   return (
     <div className="w-full max-w-md mx-auto p-4">
