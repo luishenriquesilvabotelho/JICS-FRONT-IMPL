@@ -59,6 +59,22 @@ export default function Dashboard() {
                     <CardHeader>
                         <CardTitle className="flex gap-2">
                             <RiTeamLine />
+                            Gerenciar Sorteio
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        Realizar Sorteio
+                    </CardContent>
+                    <CardFooter>
+                        <Link href="/dashboard/sorteio-times" legacyBehavior passHref >
+                            <Button> Ir para Sorteio</Button>
+                        </Link>
+                    </CardFooter>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex gap-2">
+                            <RiTeamLine />
                             Gerenciar Times
                         </CardTitle>
                     </CardHeader>

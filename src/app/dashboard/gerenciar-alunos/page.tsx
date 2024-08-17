@@ -82,7 +82,7 @@ const AbaUser: React.FC = () => {
         if (!token) {
             console.error('No token found');
             return;
-        }
+        } 
 
         try {
             const response = await api.get('/users/', {

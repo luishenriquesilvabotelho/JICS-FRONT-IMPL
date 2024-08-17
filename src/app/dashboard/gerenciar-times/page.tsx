@@ -136,8 +136,14 @@ const AbaTimes: React.FC = () => {
 
         fetchTeams();
     }, []);
-
     const handleViewTeamPlayers = async (teamId: string) => {
+        console.log('teamId recebido:', teamId); // Adicione este log
+
+        if (!teamId || typeof teamId !== 'string') {
+            console.error('Invalid teamId:', teamId); // Adicione este log para capturar o valor
+            return;
+        }
+
         try {
             const token = localStorage.getItem('token');
             if (!token) {
@@ -148,12 +154,23 @@ const AbaTimes: React.FC = () => {
                 headers: { Authorization: `Bearer ${token}` },
             };
             const response = await api.get(`/teams/${teamId}/players`, config);
-            setSelectedTeamPlayers(response.data.players);
-            console.log(response.data.players);
+
+            // A resposta já é um array de jogadores
+            if (Array.isArray(response.data)) {
+                setSelectedTeamPlayers(response.data);
+            } else {
+                console.error('Invalid response format:', response.data);
+                setSelectedTeamPlayers([]);
+            }
         } catch (error) {
             console.error("Error fetching team players:", error);
+            setSelectedTeamPlayers([]);
         }
     };
+
+
+
+
 
     const handleTeamNameFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTeamNameFilter(event.target.value);
@@ -176,11 +193,11 @@ const AbaTimes: React.FC = () => {
                         <TabsTrigger value="register" className="flex-1 text-center">Registrar Times</TabsTrigger>
                         <TabsTrigger value="search" className="flex-1 text-center">Pesquisar Times</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="register" className='w-[400px] h-[400px]'>
+                    <TabsContent value="register" className='w-[600px] h-[400px]'>
                         <Card>
                             <CardHeader>
                                 <CardTitle className="flex gap-2">
-                                    Registrar Turma
+                                    Registrar Time
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
@@ -267,7 +284,7 @@ const AbaTimes: React.FC = () => {
                                 {message && <p>{message}</p>}
                             </CardContent>
                         </Card>
-                    </TabsContent>
+                    </TabsContent> 
                     <TabsContent value="search" className='w-[600px] h-[400px]'>
                         <Card>
                             <CardHeader>
@@ -277,7 +294,7 @@ const AbaTimes: React.FC = () => {
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-4">
-                                    <Input 
+                                    <Input
                                         type="text"
                                         placeholder="Filtrar por nome do time"
                                         value={teamNameFilter}
@@ -294,6 +311,7 @@ const AbaTimes: React.FC = () => {
                                         </TableHeader>
                                         <TableBody>
                                             {filteredTeams.map(team => (
+
                                                 <TableRow key={team._id}>
                                                     <TableCell>{team.nome}</TableCell>
                                                     <TableCell>{team.modalidade}</TableCell>
@@ -301,7 +319,12 @@ const AbaTimes: React.FC = () => {
                                                     <TableCell>
                                                         <Dialog>
                                                             <DialogTrigger asChild>
-                                                                <Button onClick={() => handleViewTeamPlayers(team._id)}>Visualizar Jogadores</Button>
+                                                                <Button onClick={() => {
+                                                                    console.log('teamId ao clicar:', team._id); // Adicione este log
+                                                                    handleViewTeamPlayers(team._id);
+                                                                }}>
+                                                                    Visualizar Jogadores
+                                                                </Button>
                                                             </DialogTrigger>
                                                             <DialogContent>
                                                                 <DialogHeader>
@@ -315,19 +338,25 @@ const AbaTimes: React.FC = () => {
                                                                         </TableRow>
                                                                     </TableHeader>
                                                                     <TableBody>
-                                                                        {selectedTeamPlayers.map(player => (
+                                                                        {(Array.isArray(selectedTeamPlayers) ? selectedTeamPlayers : []).map(player => (
                                                                             <TableRow key={player._id}>
                                                                                 <TableCell>{player.nome}</TableCell>
                                                                                 <TableCell>{player.email}</TableCell>
                                                                             </TableRow>
                                                                         ))}
                                                                     </TableBody>
+
+
                                                                 </Table>
                                                             </DialogContent>
                                                         </Dialog>
                                                     </TableCell>
                                                 </TableRow>
+
                                             ))}
+
+
+
                                         </TableBody>
                                     </Table>
                                 </div>

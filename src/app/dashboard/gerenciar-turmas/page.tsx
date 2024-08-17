@@ -150,7 +150,7 @@ const AbaTurmas: React.FC = () => {
                     <TabsTrigger value="register" className="flex-1 text-center">Registrar Turma</TabsTrigger>
                     <TabsTrigger value="search" className="flex-1 text-center">Pesquisar Turmas</TabsTrigger>
                 </TabsList>
-                <TabsContent value="register">
+                <TabsContent value="register"  className='w-[600px] h-[400px]'>
                     <Card>
                         <CardHeader>
                             <CardTitle className="flex gap-2">
@@ -158,7 +158,7 @@ const AbaTurmas: React.FC = () => {
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <form onSubmit={handleSubmit} className="grid gap-4 mt-4">
+                            <form onSubmit={handleSubmit} className="grid gap-4 mt-3">
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label htmlFor="nome" className="text-right">Nome</Label>
                                     <Input
@@ -227,7 +227,7 @@ const AbaTurmas: React.FC = () => {
                         </CardContent>
                     </Card>
                 </TabsContent>
-                <TabsContent value="search">
+                <TabsContent value="search"  className='w-[600px] h-[400px]'>
                     <Card>
                         <CardHeader>
                             <CardTitle className="flex gap-2">

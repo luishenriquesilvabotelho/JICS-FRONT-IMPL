@@ -20,15 +20,13 @@ export function MainNav({
         <Link href="/dashboard" className="text-sm font-medium transition-colors hover:text-primary">
           Dashboard
         </Link>
-        <Link href="/classificacao" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+        <Link href="/classificacao" className="text-sm font-medium transition-colors hover:text-primary">
           Classificação
         </Link>
-        <Link href="/examples/dashboard" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
-          Products
+        <Link href="/standings" className="text-sm font-medium transition-colors hover:text-primary">
+          Resultados
         </Link>
-        <Link href="/examples/dashboard" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
-          Settings
-        </Link>
+       
       </div>
       <UserNav />
     </nav>

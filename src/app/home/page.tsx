@@ -8,7 +8,7 @@ export default function Home() {
       </div>
       <div className="flex-grow flex items-center justify-center pt-16 w-full">
         <h1>Welcome to the Home Page</h1>
-
+          
       </div>
     </main>
   );
