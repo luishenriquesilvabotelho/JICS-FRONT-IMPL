@@ -75,7 +75,7 @@ const Login: React.FC = () => {
                 onChange={(e) => setSenha(e.target.value)}
                 placeholder="Senha"
                 required
-              />
+              /> 
               
             </div>
             <Button className="mt-6 w-full">Logar</Button>

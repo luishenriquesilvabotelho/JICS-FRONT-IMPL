@@ -65,11 +65,13 @@ const Standings: React.FC = () => {
       }
 
       try {
+        console.log(`Fetching matches for modality: ${modality}, gender: ${gender}`);
         const response = await api.get(`/teams/matches/${modality}/${gender}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log("Matches fetched:", response.data);
         setMatches(response.data);
       } catch (error) {
         console.error("Error fetching matches:", error);
@@ -78,6 +80,7 @@ const Standings: React.FC = () => {
 
     fetchMatches();
   }, [modality, gender, updateToggle]);
+
 
   const handleScoreUpdate = () => {
     setUpdateToggle(!updateToggle);
@@ -111,26 +114,26 @@ const Standings: React.FC = () => {
               <SelectGroup>
                 <SelectLabel>Modality</SelectLabel>
                 <SelectItem value="futsal">Futsal</SelectItem>
-                <SelectItem value="volleyball">Volleyball</SelectItem>
+                <SelectItem value="volei">Volleyball</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
 
           <div className='mt-3'>
-          <Select onValueChange={(value) => setGender(value)} >
-            <SelectTrigger>
-              <SelectValue placeholder="Select Gender" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Gender</SelectLabel>
-                <SelectItem value="masculino">Masculino</SelectItem>
-                <SelectItem value="feminino">Feminino</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+            <Select onValueChange={(value) => setGender(value)} >
+              <SelectTrigger>
+                <SelectValue placeholder="Select Gender" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Gender</SelectLabel>
+                  <SelectItem value="masculino">Masculino</SelectItem>
+                  <SelectItem value="feminino">Feminino</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
+        </div>
 
         {/* Tabela com rolagem */}
         <div className="max-h-96  ">
@@ -144,6 +147,7 @@ const Standings: React.FC = () => {
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
+
             <TableBody>
               {matches.map((match) => (
                 <TableRow key={match._id}>
@@ -157,6 +161,7 @@ const Standings: React.FC = () => {
                 </TableRow>
               ))}
             </TableBody>
+
           </Table>
         </div>
       </div>

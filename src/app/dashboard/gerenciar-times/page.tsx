@@ -55,8 +55,11 @@ const AbaTimes: React.FC = () => {
 
     useEffect(() => {
         const fetchStudents = async () => {
-            if (!grupoDeTurma) return;
-
+            if (!grupoDeTurma) {
+                setStudents([]);  // Limpar a lista de alunos quando nenhum grupo for selecionado
+                return;
+            }
+    
             try {
                 const token = localStorage.getItem('token');
                 if (!token) {
@@ -72,9 +75,10 @@ const AbaTimes: React.FC = () => {
                 console.error("Error fetching students:", error);
             }
         };
-
+    
         fetchStudents();
     }, [grupoDeTurma]);
+    
 
     const handleStudentSelection = (studentId: string) => {
         setSelectedStudents(prevSelected =>
@@ -91,7 +95,7 @@ const AbaTimes: React.FC = () => {
             console.error('No token found');
             return;
         }
-
+    
         try {
             const response = await api.post('/teams/', {
                 modality,
@@ -101,10 +105,16 @@ const AbaTimes: React.FC = () => {
             }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
+    
             toast({
                 title: "Registro de Time",
                 description: `Time ${grupoDeTurma} registrado com sucesso!`,
             });
+    
+            // Limpar o estado dos jogadores selecionados e o grupo de turma
+            setSelectedStudents([]);
+            setGrupoDeTurma('');
+    
         } catch (error: any) {
             toast({
                 title: "Erro ao registrar time",
@@ -114,6 +124,7 @@ const AbaTimes: React.FC = () => {
             setMessage(error.response?.data.message || 'Erro ao registrar o time');
         }
     };
+    
 
     useEffect(() => {
         const fetchTeams = async () => {
@@ -137,13 +148,16 @@ const AbaTimes: React.FC = () => {
         fetchTeams();
     }, []);
     const handleViewTeamPlayers = async (teamId: string) => {
-        console.log('teamId recebido:', teamId); // Adicione este log
-
+        console.log('teamId recebido:', teamId);
+    
+        // Limpa o estado dos jogadores antes de buscar os novos jogadores
+        setSelectedTeamPlayers([]); 
+    
         if (!teamId || typeof teamId !== 'string') {
-            console.error('Invalid teamId:', teamId); // Adicione este log para capturar o valor
+            console.error('Invalid teamId:', teamId);
             return;
         }
-
+    
         try {
             const token = localStorage.getItem('token');
             if (!token) {
@@ -154,8 +168,7 @@ const AbaTimes: React.FC = () => {
                 headers: { Authorization: `Bearer ${token}` },
             };
             const response = await api.get(`/teams/${teamId}/players`, config);
-
-            // A resposta já é um array de jogadores
+    
             if (Array.isArray(response.data)) {
                 setSelectedTeamPlayers(response.data);
             } else {
@@ -167,11 +180,7 @@ const AbaTimes: React.FC = () => {
             setSelectedTeamPlayers([]);
         }
     };
-
-
-
-
-
+    
     const handleTeamNameFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTeamNameFilter(event.target.value);
         if (event.target.value === '') {
